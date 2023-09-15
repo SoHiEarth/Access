@@ -35,5 +35,6 @@ if NoErrors == True:
     Verbose("Initialized Variables", "Low")
 if NoErrors == False:
     Verbose("Error when initializing variables", "High")
+    
 if Booted == True & NoErrors == True:
     Verbose("Startup Complete.", "High")
