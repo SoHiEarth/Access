@@ -1,6 +1,8 @@
 import os
 import sys
 import datetime
+from ProgramDependent import Verbose as Verbose
+from ProgramDependent import ThrowError as ThrowError
 print("Console Interpreter v0.1")
 Booted = False
 StartUpOptions = input("Press SPACE to continue...")
@@ -12,19 +14,36 @@ else:
     Verb = False
 if Verb == True:
     print("Initializing Variables...")
-def Verbose(Input, Priority = "Low"):
-    if Verb == False:
-        return
-    if Priority == "High":
-        print("Priority " + Priority + ":  " + Input + "...")
-        return
-    print("Priority " + Priority + ":   " +Input + "...")
 Verbose("Initializing Variables")
-
 # Init. Var
 Importeddatetime = True
 Importedsys = True
 Importedos = True
+from System import System
+Verbose("Imported Library \"System\"")
+Scope = []
+Verbose("Scope Initialized")
+Scope = Scope + System.Commands
+Verbose("New scope from System added to current scope","Low")
+# Init. Def
+def ReferenceCommand(Input):
+    if Input not in Scope:
+        ThrowError("Command not in scope.")
+        return
+    if Input == "exit":
+        System.Exit()
+    if Input == "help":
+        System.Help()
+    if Input == "add":
+        System.Add()
+    
+def Interpreter(Input):
+    if Input not in Scope:
+        ThrowError("Command not in scope.")
+    else:
+        ReferenceCommand(Input)
+
+
 if (Importeddatetime == True) & (Importedos == True) & (Importedsys == True):
     NoErrors = True
     Verbose("Import Check Complete, No errors found.")
@@ -34,7 +53,9 @@ else:
 if NoErrors == True:
     Verbose("Initialized Variables", "Low")
 if NoErrors == False:
-    Verbose("Error when initializing variables", "High")
-    
+    Verbose("Error when initializing variables", "High")   
 if Booted == True & NoErrors == True:
     Verbose("Startup Complete.", "High")
+while Booted == True:
+    cmd = input("Console | ")
+    Interpreter(cmd)
