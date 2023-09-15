@@ -1,8 +1,3 @@
-import os
-import sys
-import datetime
-from ProgramDependent import Verbose as Verbose
-from ProgramDependent import ThrowError as ThrowError
 print("Console Interpreter v0.1")
 Booted = False
 StartUpOptions = input("Press SPACE to continue...")
@@ -14,6 +9,7 @@ else:
     Verb = False
 if Verb == True:
     print("Initializing Variables...")
+from ProgramDependent import Verbose as Verbose
 Verbose("Initializing Variables")
 # Init. Var
 Importeddatetime = True
@@ -26,24 +22,13 @@ Verbose("Scope Initialized")
 Scope = Scope + System.Commands
 Verbose("New scope from System added to current scope","Low")
 # Init. Def
-def ReferenceCommand(Input):
-    if Input not in Scope:
-        ThrowError("Command not in scope.")
-        return
-    if Input == "exit":
-        System.Exit()
-    if Input == "help":
-        System.Help()
-    if Input == "add":
-        System.Add()
-    
+from ProgramDependent import ThrowError
+from ProgramDependent import ReferenceCommand
 def Interpreter(Input):
     if Input not in Scope:
         ThrowError("Command not in scope.")
     else:
         ReferenceCommand(Input)
-
-
 if (Importeddatetime == True) & (Importedos == True) & (Importedsys == True):
     NoErrors = True
     Verbose("Import Check Complete, No errors found.")

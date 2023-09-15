@@ -11,3 +11,21 @@ def Verbose(Input, Priority = "Low", ):
         print("Priority " + Priority + ":  " + Input + "...")
         return
     print("Priority " + Priority + ":   " +Input + "...")
+def ReferenceCommand(Input:str):
+    from main import Scope
+    from System import System
+    if Input not in Scope:
+        ThrowError("Command: \""+Input+"\" not in scope.")
+        return
+    if Input == "exit":
+        System.Exit()
+    if Input == "help":
+        System.Help()
+    if Input == "add":
+        System.Add()
+    if Input == "print":
+        System.Print()
+    if Input == "Scope":
+        System.ListScope()
+    if Input == "ChangeMode":
+        System.ChangeMode()
