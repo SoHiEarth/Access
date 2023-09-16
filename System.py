@@ -1,5 +1,8 @@
 class System:
     def Exit():
+        from ProgramDependent import Verbose
+        Verbose("Closing processes","High")
+        Verbose("Closed all processes, exiting","High")
         exit(0)
     def Help():
         from main import ThrowError
@@ -21,7 +24,7 @@ class System:
                 Verbose("Command already in scope","High")
             else:
                 Scope.append(AddedCommands)
-            AddedCommands = input("Console | ")
+            AddedCommands = input("AddScope| ")
     def Print():
         Content = input("Print   | ")
         print(Content)
@@ -46,4 +49,4 @@ class System:
         from main import Scope
         for cmd in Scope:
             print("Command | "+cmd)
-    Commands = ["exit","help","add","print","Scope"]
+    Commands = ["exit","help","add","print","scope"]

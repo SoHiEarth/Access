@@ -26,7 +26,7 @@ from ProgramDependent import ThrowError
 from ProgramDependent import ReferenceCommand
 def Interpreter(Input):
     if Input not in Scope:
-        ThrowError("Command not in scope.")
+        ThrowError("Command \"" + Input +"\" not in scope.")
     else:
         ReferenceCommand(Input)
 if (Importeddatetime == True) & (Importedos == True) & (Importedsys == True):

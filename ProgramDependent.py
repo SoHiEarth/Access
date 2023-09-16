@@ -25,7 +25,7 @@ def ReferenceCommand(Input:str):
         System.Add()
     if Input == "print":
         System.Print()
-    if Input == "Scope":
+    if Input == "scope":
         System.ListScope()
     if Input == "ChangeMode":
         System.ChangeMode()
