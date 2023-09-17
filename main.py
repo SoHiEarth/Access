@@ -1,7 +1,7 @@
 print("Console Interpreter v0.1")
 Booted = False
 StartUpOptions = input("Press SPACE to continue...")
-if StartUpOptions == "Verb":
+if "-v" in StartUpOptions:
     Verb = True
     Booted = True
 else:
@@ -24,6 +24,9 @@ Verbose("New scope from System added to current scope","Low")
 # Init. Def
 from ProgramDependent import ReferenceCommand as Interpreter
 Verbose("Imported Interpreter")
+def Add(Target):
+    Scope.append(Target)
+Verbose("Initialized Add")
 if (Importeddatetime == True) & (Importedos == True) & (Importedsys == True):
     NoErrors = True
     Verbose("Import Check Complete, No errors found.")
