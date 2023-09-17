@@ -22,13 +22,8 @@ Verbose("Scope Initialized")
 Scope = Scope + System.Commands
 Verbose("New scope from System added to current scope","Low")
 # Init. Def
-from ProgramDependent import ThrowError
-from ProgramDependent import ReferenceCommand
-def Interpreter(Input):
-    if Input not in Scope:
-        ThrowError("Command \"" + Input +"\" not in scope.")
-    else:
-        ReferenceCommand(Input)
+from ProgramDependent import ReferenceCommand as Interpreter
+Verbose("Imported Interpreter")
 if (Importeddatetime == True) & (Importedos == True) & (Importedsys == True):
     NoErrors = True
     Verbose("Import Check Complete, No errors found.")

@@ -11,21 +11,45 @@ def Verbose(Input, Priority = "Low", ):
         print("Priority " + Priority + ":  " + Input + "...")
         return
     print("Priority " + Priority + ":   " +Input + "...")
-def ReferenceCommand(Input:str):
+def ReferenceCommand(Input):
     from main import Scope
     from System import System
-    if Input not in Scope:
-        ThrowError("Command: \""+Input+"\" not in scope.")
+    Parent = ""
+    Child = ""
+    for i in range(len(Input)):
+        if Input[i] == ":":
+            i += 1  # Move to the next character after ":"
+            while i < len(Input) and Input[i] != ":" and Input[i] != " ":
+                Child += Input[i]
+                i += 1
+            break
+        else:
+            Parent += Input[i]
+    if Parent not in Scope:
         return
-    if Input == "exit":
-        System.Exit()
+    
+    if Parent == "exit":
+        if Child == "":
+            System.Exit()
+        if Child == "ForceExit":
+            System.ForceExit()
+        
     if Input == "help":
-        System.Help()
+        System.Help(Child)
+
     if Input == "add":
         System.Add()
+
     if Input == "print":
         System.Print()
+
     if Input == "scope":
         System.ListScope()
+
     if Input == "ChangeMode":
         System.ChangeMode()
+        
+    if Parent == "Platform":
+        from System import PlatformData
+        if Child == "OS":
+            PlatformData.OS()

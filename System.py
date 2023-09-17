@@ -4,6 +4,8 @@ class System:
         Verbose("Closing processes","High")
         Verbose("Closed all processes, exiting","High")
         exit(0)
+    def ForceExit():
+        exit(1)
     def Help():
         from main import ThrowError
         ThrowError("exit; Exit the program.","CommandResult")
@@ -50,3 +52,11 @@ class System:
         for cmd in Scope:
             print("Command | "+cmd)
     Commands = ["exit","help","add","print","scope"]
+class PlatformData:
+    def OS():
+        from ProgramDependent import Verbose
+        import platform
+        Verbose("Imported platform")
+        print("OS Name | "+platform.system())
+        print("OS Ver  | "+platform.release()+" , "+platform.version())
+        print("Full OS | "+platform.platform())
