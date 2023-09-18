@@ -1,12 +1,14 @@
-print("Console Interpreter v0.1")
+print("Console Interpreter v0.11")
 Booted = False
 StartUpOptions = input("Press SPACE to continue...")
+Verb = False
+AddAllCommands = False
 if "-v" in StartUpOptions:
     Verb = True
-    Booted = True
-else:
-    Booted = True
-    Verb = False
+elif "-a" in StartUpOptions:
+    AddAllCommands = True
+Booted = True
+open(".verb","w").write(str(Verb))
 if Verb == True:
     print("Initializing Variables...")
 from ProgramDependent import Verbose as Verbose
@@ -27,6 +29,14 @@ Verbose("Imported Interpreter")
 def Add(Target):
     Scope.append(Target)
 Verbose("Initialized Add")
+if AddAllCommands == True:
+    Verbose("Commands from System being added to scope","High")
+    from ProgramDependent import ReferenceCommand
+    ReferenceCommand("add:System")
+    ReferenceCommand("add:Python")
+    ReferenceCommand("add:Essentials")
+    ReferenceCommand("add:PlatformData")
+    Verbose("Added all commands from System to scope","High")
 if (Importeddatetime == True) & (Importedos == True) & (Importedsys == True):
     NoErrors = True
     Verbose("Import Check Complete, No errors found.")

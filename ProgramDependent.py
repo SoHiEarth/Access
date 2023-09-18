@@ -3,14 +3,14 @@ def ThrowError(Error,Type="NewError"):
         print("Error   | "+Error)
     if Type == "CommandResult" or "Result":
         print("Result  | "+Error)
-def Verbose(Input, Priority = "Low", ):
-    from main import Verb as Verb
-    if Verb == False:
+def Verbose(Input,Priority = "Low"):
+    Verb = bool(open(".verb","r").read())
+    if Verb == False or "False":
         return
-    if Priority == "High":
-        print("Priority " + Priority + ":  " + Input + "...")
+    if Priority == "High" or "high":
+        print("Message | Priority " + Priority + ": " + Input + "...")
         return
-    print("Priority " + Priority + ":   " +Input + "...")
+    print("Message | Priority " + Priority + ":    " +Input + "...")
 def ReferenceCommand(Input):
     from main import Scope
     from System import System
@@ -25,6 +25,7 @@ def ReferenceCommand(Input):
             break
         else:
             Parent += Input[i]
+
     if Parent not in Scope:
         ThrowError("Command \""+Parent+"\" not in scope")
         return
@@ -46,6 +47,26 @@ def ReferenceCommand(Input):
             Verbose("Successfully imported System.Commands to Scope.","High")
             ThrowError("Successful.","Result")
             return
+        if Child == "Python":
+            from System import Python
+            from main import Scope
+            Scope.append(Python.Commands)
+            Verbose("Successfully imported System.Python.Commands to Scope.","High")
+            ThrowError("Successful.","Result")
+            return
+        if Child == "Essentials":
+            from System import System
+            from main import Scope
+            Scope.append(System.Commands)
+            Verbose("Successfully imported System.System.Commands to Scope.","High")
+            ThrowError("Successful.","Result")
+            return
+        if Child == "PlatformData":
+            from System import PlatformData
+            from main import Scope
+            Scope.append(PlatformData.Commands)
+            Verbose("Successfully imported System.PlatformData.Commands to Scope.","High")
+            ThrowError("Successful.","Result")
         System.Add()
 
     if Parent == "print":
@@ -67,12 +88,14 @@ def ReferenceCommand(Input):
             PlatformData.Arch()
         if Child == "Processor":
             PlatformData.Processor()
+
     if Parent == "Python":
         from System import Python
         if Child == "Version":
             Python.Version()
         if Child == "Branch":
             Python.Branch()
+
     if Parent == "wget":
         if Child == "" or None:
             ThrowError("State a child.")
@@ -80,3 +103,21 @@ def ReferenceCommand(Input):
         from System import wget
         filename = input("Name?   | ")
         wget(Child,filename)
+
+    if Parent == "import":
+        from System import Import
+        Import.Import(Child)
+    
+    if Parent == "newVariable":
+        CurrentVariable = Child
+        open(".VariableStore","w").write(CurrentVariable)
+        Verbose("Data "+str(Child)+" has been stored as a variable.","High")
+
+    if Parent == "readVariable":
+        ThrowError(open(".VariableStore","r").read(),"Result")
+        Verbose("Presented readVariable")
+
+    if Parent == "changeVariable":
+        CurrentVariable = Child
+        open(".VariableStore","w").write(CurrentVariable)
+        Verbose("Data "+str(Child)+" has been stored as a variable.","High")

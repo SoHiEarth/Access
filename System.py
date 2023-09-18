@@ -6,8 +6,11 @@ class System:
         exit(0)
     def ForceExit():
         exit(1)
-    def Help():
-        from main import ThrowError
+    def Help(arg):
+        if arg == "?":
+            print("Exiting program...")
+            System.ForceExit()
+        from ProgramDependent import ThrowError
         ThrowError("exit; Exit the program.","CommandResult")
         ThrowError("help; Get all commands for the program.","CommandResult")
         ThrowError("add; Add commands to scope.","CommandResult")
@@ -40,12 +43,14 @@ class System:
                 ThrowError("Mode is already Verb.")
                 return
             Verb = True
+            open(".verb","w").write(str(Verb))
             Verbose("Changed mode to Verb")
         if Mode == "!Verb":
             if Verb == False:
                 ThrowError("Mode is already normal.")
                 return
             Verb = False
+            open(".verb","w").write(str(Verb))
             Verbose("Changed mode to normal")
     def ListScope():
         from main import Scope
@@ -90,6 +95,19 @@ class Python:
         import platform
         Verbose("Imported platform")
         ThrowError(platform.python_branch(),"Result")
+    Commands = ["Version","Branch"]
+class Import:
+    def Import(filename):
+        from ProgramDependent import Verbose,ThrowError
+        Data = open(filename,"r").read()
+        ThrowError("Is this right?","Result")
+        print(str(Data))
+        Confirm = input("(y / n) | ")
+        if Confirm == "n":
+            Verbose("Action has been denied.")
+            return
+
+
 def wget(url,filename):
     import os
     os.system("python3 -m pip install requests")
