@@ -1,4 +1,4 @@
-print("Console Interpreter v0.11")
+print("Console Interpreter v0.12")
 Booted = False
 StartUpOptions = input("Press SPACE to continue...")
 Verb = False
