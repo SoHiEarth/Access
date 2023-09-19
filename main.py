@@ -29,6 +29,10 @@ Verbose("Imported Interpreter")
 def Add(Target):
     Scope.append(Target)
 Verbose("Initialized Add")
+def Sync(name,value):
+    if name == "StartUpOptions": StartUpOptions = value
+    if name == "Booted": Booted = value
+Verbose("Initialized Sync handler")
 if AddAllCommands == True:
     Verbose("Commands from System being added to scope","High")
     from ProgramDependent import ReferenceCommand
