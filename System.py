@@ -1,12 +1,15 @@
 class System:
     def Exit():
+        open(".processHistory","a").write("System/Exit\n")
         from ProgramDependent import Verbose
         Verbose("Closing processes","High")
         Verbose("Closed all processes, exiting","High")
         exit(0)
-    def ForceExit():
+    def ForceExit(): 
+        open(".processHistory","a").write("System/ForceExit\n")
         exit(1)
     def Help(arg):
+        open(".processHistory","a").write("System/Help\n")
         if arg == "?":
             print("Exiting program...")
             System.ForceExit()
@@ -16,7 +19,9 @@ class System:
         ThrowError("add; Add commands to scope.","CommandResult")
         ThrowError("print; Print text.","CommandResult")
         ThrowError("scope; List all commands in scope.","CommandResult")
+        ThrowError("changemode; Change the console mode.","Result")
     def Add():
+        open(".processHistory","a").write("System/Add\n")
         from ProgramDependent import ThrowError
         from ProgramDependent import Verbose
         from main import Scope
@@ -30,35 +35,31 @@ class System:
             else:
                 Scope.append(AddedCommands)
             AddedCommands = input("AddScope| ")
-    def Print():
-        Content = input("Print   | ")
-        print(Content)
-    def ChangeMode():
-        from main import Verb
+    def Print(Arg): 
+        open(".processHistory","a").write("System/Print\n")
+        print(Arg)
+    def ChangeMode(Arg,Action):
+        open(".processHistory","a").write("System/ChangeMode\n")
+        Verb = bool(open(".verb","r").read())
         from ProgramDependent import Verbose
         from ProgramDependent import ThrowError
-        Mode = input("System  | ChangeMode to :")
-        if Mode == "Verb":
-            if Verb == True:
-                ThrowError("Mode is already Verb.")
+        if Arg == "": ThrowError("Change console operation modes.","Result")
+        if Arg == "-v":
+            if Action == "-r":
+                Verb = False
+                open(".verb","w").write(str(Verb))
                 return
             Verb = True
             open(".verb","w").write(str(Verb))
-            Verbose("Changed mode to Verb")
-        if Mode == "!Verb":
-            if Verb == False:
-                ThrowError("Mode is already normal.")
-                return
-            Verb = False
-            open(".verb","w").write(str(Verb))
-            Verbose("Changed mode to normal")
     def ListScope():
+        open(".processHistory","a").write("System/ListScope\n")
         from main import Scope
         for cmd in Scope:
             print("Command | "+str(cmd))
-    Commands = ["exit","help","add","print","scope"]
+    Commands = ["system"]
 class PlatformData:
     def OS():
+        open(".processHistory","a").write("PlatformData/OS\n")
         from ProgramDependent import Verbose
         from ProgramDependent import ThrowError
         import platform
@@ -67,37 +68,43 @@ class PlatformData:
         ThrowError("OS Ver  | "+platform.release()+" , "+platform.version(),"Result")
         ThrowError("Full OS | "+platform.platform(),"Result")
     def Arch():
+        open(".processHistory","a").write("PlatformData/Arch\n")
         from ProgramDependent import Verbose
         from ProgramDependent import ThrowError
         import platform
         Verbose("Imported platform")
         ThrowError(str(platform.architecture()),"Result")
     def Processor():
+        open(".processHistory","a").write("PlatformData/Processor\n")
         from ProgramDependent import Verbose
         from ProgramDependent import ThrowError
         import platform
         Verbose("Imported platform")
         ThrowError(platform.processor(),"Result")
     def Help():
+        open(".processHistory","a").write("PlatformData/Help\n")
         from ProgramDependent import ThrowError
         ThrowError("Platform can detect and present system information using the platform module included with Python.","Result")
-    Commands = ["OS","Arch","Processor","Help"]
+    Commands = ["OS","arch","processor","help"]
 class Python:
     def Version():
+        open(".processHistory","a").write("Python/Version\n")
         from ProgramDependent import Verbose
         from ProgramDependent import ThrowError
         import platform
         Verbose("Imported platform")
         ThrowError(platform.python_version(),"Result")
     def Branch():
+        open(".processHistory","a").write("Python/Branch\n")
         from ProgramDependent import Verbose
         from ProgramDependent import ThrowError
         import platform
         Verbose("Imported platform")
         ThrowError(platform.python_branch(),"Result")
-    Commands = ["Version","Branch"]
+    Commands = ["version","branch"]
 class Import:
     def Import(filename):
+        open(".processHistory","a").write("Import/Import\n")
         from ProgramDependent import Verbose,ThrowError
         Data = open(filename,"r").read()
         ThrowError("Is this right?","Result")
@@ -106,9 +113,45 @@ class Import:
         if Confirm == "n":
             Verbose("Action has been denied.")
             return
-
+class Internal:
+    from ProgramDependent import Verbose,ThrowError
+    ThrowError("Using this class is not recommended, may break the program.")
+    def readVal(name):
+        open(".processHistory","a").write("Internal/readVal\n")
+        if name == "scope":
+            from main import Scope
+            for cmd in Scope: print(cmd)
+        if name == "StartUpOptions":
+            from main import StartUpOptions
+            print(StartUpOptions)
+        if name == "booted": 
+            from main import Booted
+            print(Booted)
+        if name == "verb": print(open(".verb","r").read())
+    def changeVal(name,value):
+        open(".processHistory","a").write("Internal/changeVal\n")
+        from main import Scope
+        Scope = []
+        if name == "scope":
+            cmd = input("Console | ")
+            while cmd != "exit":
+                Scope.append(cmd)
+                cmd = input("Console | ")
+                if cmd == "exit": return
+        if name == "StartUpOptions":
+            from main import Sync
+            Sync(name,value)
+        if name == "booted":
+            from ProgramDependent import ThrowError
+            from main import Booted
+            ThrowError("Altering this may crash the program.")
+            import time
+            time.sleep(1)
+            from main import Sync
+            Sync("Booted",bool(value))
 
 def wget(url,filename):
+    open(".processHistory","a").write("wget\n")
     import os
     os.system("python3 -m pip install requests")
     import requests
