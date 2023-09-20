@@ -4,7 +4,10 @@ def ThrowError(Error,Type="NewError"):
     if Type == "CommandResult" or "Result":
         print("Result  | "+Error)
 def Verbose(Input,Priority = "Low"):
+    from datetime import datetime
+    now = datetime.now()
     Verb = bool(open(".verb","r").read())
+    open(".log","a").write(now.strftime("%m/%d/%Y, %H:%M:%S")+str(Input)+"\n")
     if Verb == False or "False":
         return
     if Priority == "High" or "high":
@@ -121,3 +124,9 @@ def ReferenceCommand(Input):
         CurrentVariable = Child
         open(".VariableStore","w").write(CurrentVariable)
         Verbose("Data "+str(Child)+" has been stored as a variable.","High")
+    
+    if Parent == "Mode":
+        if Child == "Change":
+            System.ChangeMode()
+        if Child == "Display":
+            print(open(".verb","r").read())
