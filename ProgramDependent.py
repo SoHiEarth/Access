@@ -98,8 +98,7 @@ def ReferenceCommand(Input):
             ThrowError("State a child.")
             return
         from System import wget
-        filename = input("Name?   | ")
-        wget(Child,filename)
+        wget(Child,args)
     if Parent == "import":
         from System import Import
         Import.Import(Child)  
