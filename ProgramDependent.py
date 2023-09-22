@@ -79,7 +79,7 @@ def ReferenceCommand(Input):
                 Verbose("Successfully imported System.PlatformData.Commands to Scope.","High")
                 ThrowError("Successful.","Result")
             System.Add()
-        if Child == "print": System.Print()
+        if Child == "print": System.Print(args)
         if Child == "scope": System.ListScope()
         if Child == "changemode": System.ChangeMode(args,subargs)
     if Parent == "platform":
