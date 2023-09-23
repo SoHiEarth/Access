@@ -1,4 +1,4 @@
-print("Console Interpreter v0.12")
+print("Console Interpreter v0.13")
 Booted = False
 StartUpOptions = input("Press SPACE to continue...")
 Verb = False
@@ -21,8 +21,11 @@ from System import System
 Verbose("Imported Library \"System\"")
 Scope = []
 Verbose("Scope Initialized")
+from System import Commands
+Scope = Scope + Commands
+Verbose("All scope elements from System added to current scope")
 Scope = Scope + System.Commands
-Verbose("New scope from System added to current scope","Low")
+Verbose("New scope from System added to current scope")
 # Init. Def
 from ProgramDependent import ReferenceCommand as Interpreter
 Verbose("Imported Interpreter")

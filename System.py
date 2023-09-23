@@ -1,7 +1,14 @@
 class System:
     def Exit():
         open(".processHistory","a").write("System/Exit\n")
+        import os
         from ProgramDependent import Verbose
+        if os.path.exists("SystemInfo.py"):
+            os.rmdir("SystemInfo.py")
+            open(".processHistory","a").write("System/Exit/RemovedSystemInfo\n")
+        if os.path.exists("__pycache__"):
+            os.rmdir("__pycache__")
+            open(".processHistory","a").write("System/Exit/Removed__pycache__\n")
         Verbose("Closing processes","High")
         Verbose("Closed all processes, exiting","High")
         exit(0)
@@ -149,7 +156,6 @@ class Internal:
             time.sleep(1)
             from main import Sync
             Sync("Booted",bool(value))
-
 def wget(url,filename):
     open(".processHistory","a").write("wget\n")
     import os
@@ -159,4 +165,4 @@ def wget(url,filename):
     open(filename,"w").write(data.content)
     from ProgramDependent import ThrowError
     ThrowError("Downloaded to "+os.getcwd()+"/"+filename)
-Commands = ["wget"]
+Commands = ["system","platform","python","import","internal","wget"]

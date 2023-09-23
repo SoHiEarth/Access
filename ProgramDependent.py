@@ -6,13 +6,17 @@ def ThrowError(Error,Type="NewError"):
         print("Result  | "+Error)
 def Verbose(Input,Priority = "Low"):
     open(".processHistory","a").write("Verbose\n")
-    open(".log","a").write("Priority | "+ Priority + " | " +Input+"\n")
+    from datetime import datetime
+    time = datetime.now()
+    time = time.strftime("%d/%m/%Y, %H/:%M:%S")
     Verb = bool(open(".verb","r").read())
     if Verb == False:
         return
     if Priority == "High":
-        print("Message | Priority " + Priority + ": " + Input + "...")
+        open(".log","a").write(time+" | Priority | "+ Priority + " | " +Input+"\n")
+        print("Message | Priority " + Priority + ":   " + Input + "...")
         return
+    open(".log","a").write(time+" | Priority | "+ Priority + "  | " +Input+"\n")
     print("Message | Priority " + Priority + ":    " +Input + "...")
 def ReferenceCommand(Input):
     open(".processHistory","a").write("RefCommand\n")
@@ -81,7 +85,7 @@ def ReferenceCommand(Input):
                 Verbose("Successfully imported System.PlatformData.Commands to Scope.","High")
                 ThrowError("Successful.","Result")
             System.Add()
-        if Child == "print": System.Print()
+        if Child == "print": System.Print(args)
         if Child == "scope": System.ListScope()
         if Child == "changemode": System.ChangeMode(args,subargs)
     if Parent == "platform":
@@ -119,6 +123,10 @@ def ReferenceCommand(Input):
     if Parent == "throwerror": ThrowError(str(Child))
     if Parent == "verbose": Verbose(str(Child))
     if Parent == "display":
+        if Child == "all": 
+            ThrowError(Parent, "Result")
+            ThrowError(Child, "Result")
+            ThrowError(args, "Result")
         if Child == "parent": ThrowError(Parent, "Result")
         if Child == "child": ThrowError(Child, "Result")
         if Child == "args": ThrowError(args, "Result")
@@ -131,9 +139,21 @@ def ReferenceCommand(Input):
                 if subargs == "processes": open("PROCESSDUMP.txt","w").write((open(".processHistory","r").read()))
                 if subargs == "scope": open("SCOPEDUMP.txt","w").write(str("Parent: " + str(Parent) +"\nChild: "+str(Child) +"\nArguments: "+ str(args)+"\nSubArgs: "+str(subargs)))
         else: print("Dump information in different ways.")
-    if Parent == "sysInternals":
+    if Parent == "internals":
         from System import Internal
         if Child == "readVal":
             Internal().readVal(args)
         if Child == "changeVal":
             Internal().changeVal(args,subargs)
+    if Parent == "help":
+        ThrowError("This is a program for Python users that want to have better control over their system. To exit, use \"system:exit\" for all commands in the scope, use \"system:help\".","Result")
+    if Parent == "console":
+        if Child == "Version":
+            open(".processHistory","a").write("ProgramDependent/ReferenceCommand/console/Version\n")
+            SystemInfo = open("SystemInfo.info","r").read()
+            open("SystemInfo.py","w").write(SystemInfo)
+            from SystemInfo import Version
+            ThrowError(str(Version),"Result")
+    if Parent == "exit":
+        from System import System
+        System.Exit()
