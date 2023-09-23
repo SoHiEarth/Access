@@ -5,12 +5,15 @@ def ThrowError(Error,Type="NewError"):
     if Type == "CommandResult" or "Result":
         print("Result  | "+Error)
 def Verbose(Input,Priority = "Low"):
+<<<<<<< HEAD
     open(".processHistory","a").write("Verbose\n")
     from datetime import datetime
     time = datetime.now()
     time = time.strftime("%d/%m/%Y, %H/:%M:%S")
+=======
+>>>>>>> 03f1a78a41461048712d1dab59e57733ffbccb56
     Verb = bool(open(".verb","r").read())
-    if Verb == False:
+    if Verb == False or "False":
         return
     if Priority == "High":
         open(".log","a").write(time+" | Priority | "+ Priority + " | " +Input+"\n")
@@ -104,8 +107,7 @@ def ReferenceCommand(Input):
             ThrowError("State a child.")
             return
         from System import wget
-        filename = input("Name?   | ")
-        wget(Child,filename)
+        wget(Child,args)
     if Parent == "import":
         from System import Import
         Import.Import(Child)  
@@ -119,6 +121,7 @@ def ReferenceCommand(Input):
     if Parent == "changeVariable":
         CurrentVariable = Child
         open(".VariableStore","w").write(CurrentVariable)
+<<<<<<< HEAD
         Verbose("Data "+str(Child)+" has been stored as a variable.","High")
     if Parent == "throwerror": ThrowError(str(Child))
     if Parent == "verbose": Verbose(str(Child))
@@ -157,3 +160,6 @@ def ReferenceCommand(Input):
     if Parent == "exit":
         from System import System
         System.Exit()
+=======
+        Verbose("Data "+str(Child)+" has been stored as a variable.","High")
+>>>>>>> 03f1a78a41461048712d1dab59e57733ffbccb56
