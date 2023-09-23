@@ -9,3 +9,4 @@ Custom modules can be created and implemented albiet with a bit of *fanciness*.
 ## Todos
 	- [ ] More robust and user-friendly customizing
  	- [x] Bugfixes
+	- [x] Better support for wandering strangers
