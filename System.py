@@ -4,11 +4,23 @@ class System:
         import os
         from ProgramDependent import Verbose
         if os.path.exists("SystemInfo.py"):
-            os.rmdir("SystemInfo.py")
+            os.remove("SystemInfo.py")
             open(".processHistory","a").write("System/Exit/RemovedSystemInfo\n")
         if os.path.exists("__pycache__"):
-            os.rmdir("__pycache__")
+            os.remove("__pycache__")
             open(".processHistory","a").write("System/Exit/Removed__pycache__\n")
+        if os.path.exists("TemporaryFile.py"):
+            os.remove("TemporaryFile.py")
+            open(".processHistory","a").write("System/Exit/RemovedTemporaryFile\n")
+        if os.path.exists(".verb"):
+            os.remove(".verb")
+            open(".processHistory","a").write("System/Exit/Removed.verb\n")
+        if os.path.exists(".log"):
+            os.remove(".log")
+            open(".processHistory","a").write("System/Exit/Removed.log\n")
+        if os.path.exists(".processHistory"):
+            os.remove(".processHistory")
+            open(".processHistory","a").write("System/Exit/Removed.processHistory\n")
         Verbose("Closing processes","High")
         Verbose("Closed all processes, exiting","High")
         exit(0)
@@ -120,6 +132,33 @@ class Import:
         if Confirm == "n":
             Verbose("Action has been denied.")
             return
+    def InstallNewPackage(filename):
+        open(".processHistory","a").write("Import/InstallNewPackage\n")
+        from ProgramDependent import Verbose,ThrowError
+        newPackage = filename + ".pack"
+        import os
+        os.chdir()
+        Data = open(newPackage,"r").read()
+        if FileNotFoundError:
+            ThrowError("File not found. Try again.")
+            return
+        print(str(Data))
+        ThrowError("Is this right?","Result")
+        Confirm = input("(y / n) | ")
+        if Confirm == "n":
+            Verbose("Action has been denied.")
+            return
+        open("packages.manifest","a").write("\""+filename+"\",")
+        import os
+        if os.path.exists("Packages") == False:
+            os.chdir()
+            os.mkdir("Packages")
+        os.chdir("Packages")
+        open(filename+".pack","w").write(Data)
+        from main import Add
+        Add(filename)
+        ThrowError("Package successfully installed. Access it as \""+filename+"\"")
+
 class Internal:
     from ProgramDependent import Verbose,ThrowError
     ThrowError("Using this class is not recommended, may break the program.")
@@ -161,8 +200,15 @@ def wget(url,filename):
     import os
     os.system("python3 -m pip install requests")
     import requests
-    data = requests.get(url)
-    open(filename,"w").write(data.content)
+    if url.startswith("https://") == False:
+        from ProgramDependent import Verbose
+        Verbose("Adding https:// to url because connection type is not vaild...")
+        url = "https://" + url
+    data = requests.get(url,)
+    if requests.exceptions.MissingSchema == True:
+        from ProgramDependent import ThrowError
+        ThrowError("Invaild URL '"+url+"': No scheme supplied.")
+    open(filename,"w").write(str(data.content))
     from ProgramDependent import ThrowError
     ThrowError("Downloaded to "+os.getcwd()+"/"+filename)
 Commands = ["system","platform","python","import","internal","wget"]

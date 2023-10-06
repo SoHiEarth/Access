@@ -1,4 +1,6 @@
-print("Console Interpreter v0.13")
+open("TemporaryFile.py","w").write(open("SystemInfo.info","r").read())
+from TemporaryFile import Version
+print("Access "+str(Version))
 Booted = False
 StartUpOptions = input("Press SPACE to continue...")
 Verb = False

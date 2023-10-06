@@ -29,19 +29,19 @@ def ReferenceCommand(Input):
     i = 0  # Initialize the index outside the loop
 
     while i < len(Input):
-        if Input[i] == ":":
+        if Input[i] == " ":
             i += 1  # Move to the next character after ":"
-            while i < len(Input) and Input[i] != ":" and Input[i] != " ":
+            while i < len(Input) and Input[i] != " " and Input[i] != " ":
                 Child += Input[i]
                 i += 1
-            if i < len(Input) and Input[i] == ":":
+            if i < len(Input) and Input[i] == " ":
                 i += 1  # Move to the next character after the second ":"
-                while i < len(Input) and Input[i] != ":" and Input[i] != " ":
+                while i < len(Input) and Input[i] != " " and Input[i] != " ":
                     args += Input[i]
                     i += 1
-                if i < len(Input) and Input[i] == ":":
+                if i < len(Input) and Input[i] == " ":
                     i += 1  # Move to the next character after the third ":"
-                    while i < len(Input) and Input[i] != ":" and Input[i] != " ":
+                    while i < len(Input) and Input[i] != " " and Input[i] != " ":
                         subargs += Input[i]
                         i += 1
             break
@@ -148,10 +148,25 @@ def ReferenceCommand(Input):
     if Parent == "help":
         ThrowError("This is a program for Python users that want to have better control over their system. To exit, use \"system:exit\" for all commands in the scope, use \"system:help\".","Result")
     if Parent == "console":
+        if Child == "InstallPackage":
+            from System import Import
+            Import.InstallNewPackage(args)
+        if Child == "UpdatePackageList":
+            open("packages.manifest","w").write(open(".packages","r").read())
+        if Child == "PrintAllInstalledPackages":
+            open(".processHistory","a").write("ProgramDependent/ReferenceCommand/console/PrintAllInstalledPackages\n")
+            import os
+            if os.path.exists("packages.manifest") == False:
+                open("SystemInfo.py","w").write(open("SystemInfo.info","r").read())
+                from SystemInfo import InstalledPackages
+                for package in InstalledPackages:
+                    ThrowError(package,"Result")
+                return
+            ThrowError("Not a native version of package manager, falling back to old.")
+            ThrowError(open("packages.pack","w").write(open("packages.manifest","r").read()),"Result")
         if Child == "Version":
             open(".processHistory","a").write("ProgramDependent/ReferenceCommand/console/Version\n")
-            SystemInfo = open("SystemInfo.info","r").read()
-            open("SystemInfo.py","w").write(SystemInfo)
+            open("SystemInfo.py","w").write(open("SystemInfo.info","r").read())
             from SystemInfo import Version
             ThrowError(str(Version),"Result")
     if Parent == "exit":
