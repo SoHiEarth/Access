@@ -18,7 +18,7 @@ def Verbose(Input,Priority = "Low"):
         return
     open(".log","a").write(time+" | Priority | "+ Priority + "  | " +Input+"\n")
     print("Message | Priority " + Priority + ":    " +Input + "...")
-def ReferenceCommand(Input):
+def ReferenceCommand(Input : str):
     open(".processHistory","a").write("RefCommand\n")
     from main import Scope
     from System import System
@@ -273,5 +273,4 @@ def Interpreter(Command : str):
             if Args[2] == "changemode":
                 System.ChangeMode(Args[3],Args[4])
     except IndexError:
-        ThrowError("IndexError, did you forget a space?")
-        
+        ThrowError("IndexError, did you forget a space?")       
