@@ -2,8 +2,6 @@
 ## Latest Version: ***0.14***
 ## Simple and intuitive terminal/console to access system infomation, etc.
 Access your platform info with `platform`, change your scope with `add` or `scope`
-## Gives you errors face on.
-Errors are full, detail rich, and informative.
 ## Powerful tools included with the program.
 Access tools like wget that's already included with the program.
 
