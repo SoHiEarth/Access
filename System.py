@@ -158,6 +158,26 @@ class Import:
         from main import Add
         Add(filename)
         ThrowError("Package successfully installed. Access it as \""+filename+"\"")
+    def UpdatePackageList():
+        open("packages.manifest","w").write(open(".packages","r").read())
+    def PrintAllinstalledPackages():
+        open(".processHistory","a").write("ProgramDependent/ReferenceCommand/console/PrintAllInstalledPackages\n")
+        import os
+        from ProgramDependent import ThrowError
+        if os.path.exists("packages.manifest") == False:
+                open("SystemInfo.py","w").write(open("SystemInfo.info","r").read())
+                from SystemInfo import InstalledPackages
+                for package in InstalledPackages:
+                    ThrowError(package,"Result")
+                return
+        ThrowError("Not a native version of package manager, falling back to old.")
+        ThrowError(open("packages.pack","w").write(open("packages.manifest","r").read()),"Result")
+    def Version():
+        open(".processHistory","a").write("ProgramDependent/ReferenceCommand/console/Version\n")
+        open("SystemInfo.py","w").write(open("SystemInfo.info","r").read())
+        from ProgramDependent import ThrowError
+        from SystemInfo import Version
+        ThrowError(str(Version),"Result")
 
 class Internal:
     from ProgramDependent import Verbose,ThrowError

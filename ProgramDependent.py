@@ -152,7 +152,8 @@ def ReferenceCommand(Input):
             from System import Import
             Import.InstallNewPackage(args)
         if Child == "UpdatePackageList":
-            open("packages.manifest","w").write(open(".packages","r").read())
+            from System import Import
+            Import.UpdatePackageList()
         if Child == "PrintAllInstalledPackages":
             open(".processHistory","a").write("ProgramDependent/ReferenceCommand/console/PrintAllInstalledPackages\n")
             import os
@@ -172,3 +173,105 @@ def ReferenceCommand(Input):
     if Parent == "exit":
         from System import System
         System.Exit()
+
+def Interpreter(Command : str):
+    open(".processHistory","a").write("Interpreter\n")
+    from main import Scope
+    from System import System
+    Args = Command.split(" ")
+    try:
+        if Args[1] not in Scope:
+            ThrowError("Command not in scope.")
+        if Args[1] == "internals":
+            from System import Internal
+            if Args[2] == "readVal":
+                Internal().readVal(Args[3])
+            if Args[2] == "changeVal":
+                Internal().changeVal(Args[3], Args[4])
+        if Args[1] == "console":
+            if Args[2] == "InstallPackage":
+                from System import Import
+                Import.InstallNewPackage(Args[3])
+            if Args[2] == "UpdatePackageList":
+                from System import Import
+                Import.UpdatePackageList()
+            if Args[2] == "PrintAllInstalledPackages":
+                from System import Import
+                Import.PrintAllinstalledPackages()
+            if Args[2] == "Version":
+                from System import Import
+                Import.Version()
+        if Args[1] == "exit":
+            from System import System
+            System.Exit()
+        if Args[1] == "help":
+            ThrowError("This is a program for Python users that want to have better control over their system. To exit, use \"system:exit\" for all commands in the scope, use \"system:help\".","Result")
+        if Args[1] == "dump":
+            if Args[2] == "print":
+                if Args[3] == "scope": print(Args)
+                if Args[3] == "processes" : print(open(".processHistory","r").read())
+            if Args[2] == "dump":
+                if Args[3] == "text":
+                    if Args[4] == "proccesses": open("PROCESSDUMP.txt","w").write((open(".processHistory","r").read()))
+                    if Args[4] == "scope": open("SCOPEDUMP.txt","w").write(str("Parent: " + str(Args[1]) +"\nChild: "+str(Args[2]) +"\nArguments: "+ str(Args[3])+"\nSubArgs: "+str(Args[4])))
+            else: print("Dump information in different ways.")
+        if Args[1] == "display":
+            if Args[2] == "all":
+                ThrowError(Args[1], "Result")
+                ThrowError(Args[2], "Result")
+                ThrowError(Args[3],"Result")
+            if Args[2] == "parent": ThrowError(Args[1],"Result")
+            if Args[2] == "child": ThrowError(Args[2],"Result")
+            if Args[2] == "args": ThrowError(Args[3],"Result")
+        if Args[1] == "python":
+            from System import Python
+            if Args[2] == "version": Python.Version()
+            if Args[2] == "branch": Python.Branch()
+        if Args[1] == "platform":
+            from System import PlatformData
+            if Args[2] == "": PlatformData.Help()
+            if Args[2] == "OS": PlatformData.OS()
+            if Args[2] == "arch": PlatformData.Arch()
+            if Args[2] == "processor": PlatformData.Processor()
+            if Args[2] == "help": PlatformData.Help()
+        if Args[1] == "system":
+            if Args[2] == "exit":
+                if Args[3] == "": System.Exit()
+                if Args[3] == "ForceExit": System.ForceExit() 
+            if Args[2] == "help": System.Help(Args[3])
+            if Args[2] == "add":
+                if Args[3] == "System":
+                    from System import Commands
+                    from main import Scope
+                    Scope.append(Commands)
+                    Verbose("Successfully imported System.Commands to Scope.","High")
+                    ThrowError("Successful.","Result")
+                    return
+                if Args[3] == "Python":
+                    from System import Python
+                    from main import Scope
+                    Scope.append(Python.Commands)
+                    Verbose("Successfully imported System.Python.Commands to Scope.","High")
+                    ThrowError("Successful.","Result")
+                    return
+                if Args[3] == "Essentials":
+                    from System import System
+                    from main import Scope
+                    Scope.append(System.Commands)
+                    Verbose("Successfully imported System.System.Commands to Scope.","High")
+                    ThrowError("Successful.","Result")
+                    return
+                if Args[3] == "PlatformData":
+                    from System import PlatformData
+                    from main import Scope
+                    Scope.append(PlatformData.Commands)
+                    Verbose("Successfully imported System.PlatformData.Commands to Scope.","High")
+                    ThrowError("Successful.","Result")
+                System.Add()
+            if Args[2] == "print": System.Print(Args[3])
+            if Args[2] == "scope": System.ListScope()
+            if Args[2] == "changemode":
+                System.ChangeMode(Args[3],Args[4])
+    except IndexError:
+        ThrowError("IndexError, did you forget a space?")
+        

@@ -29,7 +29,7 @@ Verbose("All scope elements from System added to current scope")
 Scope = Scope + System.Commands
 Verbose("New scope from System added to current scope")
 # Init. Def
-from ProgramDependent import ReferenceCommand as Interpreter
+from ProgramDependent import Interpreter
 Verbose("Imported Interpreter")
 def Add(Target):
     Scope.append(Target)
@@ -40,11 +40,11 @@ def Sync(name,value):
 Verbose("Initialized Sync handler")
 if AddAllCommands == True:
     Verbose("Commands from System being added to scope","High")
-    from ProgramDependent import ReferenceCommand
-    ReferenceCommand("add:System")
-    ReferenceCommand("add:Python")
-    ReferenceCommand("add:Essentials")
-    ReferenceCommand("add:PlatformData")
+    from ProgramDependent import Interpreter
+    Interpreter("add System")
+    Interpreter("add Python")
+    Interpreter("add Essentials")
+    Interpreter("add PlatformData")
     Verbose("Added all commands from System to scope","High")
 if (Importeddatetime == True) & (Importedos == True) & (Importedsys == True):
     NoErrors = True
